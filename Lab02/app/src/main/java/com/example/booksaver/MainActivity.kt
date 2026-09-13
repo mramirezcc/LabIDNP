@@ -46,6 +46,7 @@ fun BookSaverApp(modifier: Modifier = Modifier) {
     var title by remember { mutableStateOf("") }
     var author by remember { mutableStateOf("") }
     var pages by remember { mutableStateOf("") }
+    var savedRecord by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -97,14 +98,25 @@ fun BookSaverApp(modifier: Modifier = Modifier) {
                     context.openFileInput(filename).bufferedReader().use { reader ->
                         val content = reader.readText()
                         Log.d("BookSaver", "Contenido del archivo:\n$content")
+                        savedRecord = content
                     }
                 } catch (e: Exception) {
                     Log.e("BookSaver", "Error al leer datos o archivo no existe", e)
+                    savedRecord = "Error al leer datos o archivo no existe."
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Ver registro")
+        }
+
+        if (savedRecord.isNotEmpty()) {
+            Text(
+                text = savedRecord,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            )
         }
     }
 }
